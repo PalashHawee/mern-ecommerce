@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 
 //db connection
 
-mongoose.connect("mongodb+srv://haweepalash:QCs3NPCUMog87wqn@cluster0.eblfz.mongodb.net/",
+mongoose.connect("mongodb+srv://@cluster0.eblfz.mongodb.net/",
     {
     useNewUrlParser: true,
     useUnifiedTopology: true
