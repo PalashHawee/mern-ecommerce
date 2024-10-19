@@ -1,20 +1,40 @@
 import CommonForm from "@/components/common/form";
 import { loginFormControls } from "@/config";
+import { useToast } from "@/hooks/use-toast";
+import { loginUser } from "@/store/auth-slice";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 const intialState = {
-  
   email: "",
   password: "",
 };
 
-const onSubmit = () => {
-  // Call your API endpoint to register the user here
-};
-
 const AuthLogin = () => {
   const [formData, setFormData] = useState(intialState);
+
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+
+  const onSubmit = (event) => {
+    // Call your API endpoint to login the user here
+    event.preventDefault();
+    dispatch(loginUser(formData)).then((data) => {
+      if (data?.payload?.success) {
+        toast({
+          title: data?.payload?.message,
+          type: "success",
+        });
+      } else {
+        toast({
+          title: data?.payload?.message,
+          variant: "destructive",
+        }); 
+      }
+    });
+  };
+
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
