@@ -4,6 +4,7 @@ import { Navigate, useLocation } from "react-router-dom";
 const CheckAuth = ({ isAuthenticated, user, children }) => {
   const location = useLocation();
 
+  
   // Redirect to login if not authenticated and not on login/register pages
   if (
     !isAuthenticated &&
