@@ -25,13 +25,20 @@ const AdminProducts = () => {
   const [openCreateProductsDialog, setOpenCreateProductsDialog] =
     useState(false);
   const [formData, setFormData] = useState(initialFormData);
+  const [imageFile, setImageFile] = useState(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [imageLoadingState, setImageLoadingState] = useState(false);
 
   const onSubmit = () => {};
 
   return (
     <Fragment>
       <div className="mb-5 flex w-full justify-end">
-        <Button onClick={() => setOpenCreateProductsDialog(true)}>
+        <Button
+          className=" bg-purple-900
+          text-white rounded-sm hover:text-black"
+          onClick={() => setOpenCreateProductsDialog(true)}
+        >
           Add new Product
         </Button>
       </div>
@@ -44,7 +51,13 @@ const AdminProducts = () => {
           <SheetHeader>
             <SheetTitle>Add new Product</SheetTitle>
           </SheetHeader>
-          <ProductImageUplaod />
+          <ProductImageUplaod
+            imageFile={imageFile}
+            setImageFile={setImageFile}
+            uploadedImageUrl={uploadedImageUrl}
+            setUploadedImageUrl={setUploadedImageUrl}
+            setImageLoadingState={setImageLoadingState}
+          />
           <div className="py-6">
             <CommonForm
               onSubmit={onSubmit}
