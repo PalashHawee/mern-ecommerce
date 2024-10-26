@@ -1,7 +1,12 @@
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter } from "../ui/card";
 
-function AdminProductTile({ product }) {
+function AdminProductTile({
+  product,
+  setFormData,
+  setOpenCreateProductsDialog,
+  setCurrentEditedId,
+}) {
   // console.log(product?.image, "Product Image URL");
 
   return (

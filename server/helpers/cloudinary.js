@@ -15,10 +15,12 @@ const storage = new multer.memoryStorage();
 export const imageUploadUtil = async (file) => {
   const result = await cloudinary.uploader.upload(file, {
     resource_type: "auto",
-    
   });
 
   return result;
 };
 
-export const upload = multer({ storage });
+export const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 },
+});
