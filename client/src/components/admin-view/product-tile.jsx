@@ -6,6 +6,7 @@ function AdminProductTile({
   setFormData,
   setOpenCreateProductsDialog,
   setCurrentEditedId,
+  handleDelete,
 }) {
   // console.log(product?.image, "Product Image URL");
 

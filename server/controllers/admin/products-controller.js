@@ -83,36 +83,41 @@ export const editProduct = async (req, res) => {
       title,
       description,
       category,
+      brand,
       price,
       salePrice,
       totalStock,
+      averageReview,
     } = req.body;
-    const findProduct = await Product.findById({ id });
+
+    let findProduct = await Product.findById(id);
     if (!findProduct)
       return res.status(404).json({
         success: false,
         message: "Product not found",
       });
+
     findProduct.title = title || findProduct.title;
     findProduct.description = description || findProduct.description;
     findProduct.category = category || findProduct.category;
     findProduct.brand = brand || findProduct.brand;
-    findProduct.price = price || findProduct.price;
-    findProduct.salePrice = salePrice || findProduct.salePrice;
+    findProduct.price = price === "" ? 0 : price || findProduct.price;
+    findProduct.salePrice =
+      salePrice === "" ? 0 : salePrice || findProduct.salePrice;
     findProduct.totalStock = totalStock || findProduct.totalStock;
     findProduct.image = image || findProduct.image;
+    findProduct.averageReview = averageReview || findProduct.averageReview;
+
     await findProduct.save();
     res.status(200).json({
       success: true,
-      message: "Product edited successfully",
-      product: findProduct,
+      data: findProduct,
     });
-  } catch (error) {
-    console.error("Error editing product:", error);
+  } catch (e) {
+    console.log(e);
     res.status(500).json({
       success: false,
-      message: "Failed to edit product",
-      error: error.message, // Optionally include error message for debugging
+      message: "Error occured",
     });
   }
 };
@@ -122,7 +127,7 @@ export const editProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const findProduct = await Product.findByIdAndDelete({ id });
+    const findProduct = await Product.findByIdAndDelete(id);
     if (!findProduct)
       return res.status(404).json({
         success: false,
