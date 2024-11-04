@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ShoppingProductTile from "../../components/shopping-view/product-tile";
 import { useSearchParams } from "react-router-dom";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
+import { addToCart } from "@/store/shop/cart-slice";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -37,6 +38,7 @@ const ShoppingListing = () => {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+  const { user } = useSelector((state) => state.auth);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -76,6 +78,17 @@ const ShoppingListing = () => {
     dispatch(fetchProductDetails(getCurrentProductId));
   };
 
+  function handleAddtoCart(getCurrentProductId) {
+    console.log(getCurrentProductId);
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then((data) => console.log(data) );
+  }
+
   useEffect(() => {
     setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
@@ -101,7 +114,7 @@ const ShoppingListing = () => {
     }
   }, [productDetails]);
 
-  console.log(productDetails, "productDetails");
+  // console.log(productDetails, "productDetails");
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
@@ -149,6 +162,7 @@ const ShoppingListing = () => {
                   handleGetProductDetails={handleGetProductDetails}
                   key={productItem.id}
                   product={productItem}
+                  handleAddtoCart={handleAddtoCart}
                 />
               ))
             : null}
