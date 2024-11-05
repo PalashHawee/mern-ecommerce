@@ -19,7 +19,9 @@ import { useDispatch, useSelector } from "react-redux";
 import ShoppingProductTile from "../../components/shopping-view/product-tile";
 import { useSearchParams } from "react-router-dom";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
-import { addToCart } from "@/store/shop/cart-slice";
+import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
+import { useToast } from "@/hooks/use-toast";
+import Footer from "@/components/shopping-view/footer";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -38,6 +40,7 @@ const ShoppingListing = () => {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+  const { toast } = useToast();
   const { user } = useSelector((state) => state.auth);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
@@ -86,7 +89,14 @@ const ShoppingListing = () => {
         productId: getCurrentProductId,
         quantity: 1,
       })
-    ).then((data) => console.log(data) );
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchCartItems(user?.id));
+        toast({
+          title: "Product added to cart successfully",
+        });
+      }
+    });
   }
 
   useEffect(() => {
@@ -117,7 +127,7 @@ const ShoppingListing = () => {
   // console.log(productDetails, "productDetails");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
+    <><div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
       <ProductFilter filters={filters} handleFilter={handleFilter} />
       <div className="bg-background w-full rounded-lg shadow-sm">
         <div className="p-4 border-b  justify-between items-center">
@@ -158,22 +168,21 @@ const ShoppingListing = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-4">
           {productList && productList.length > 0
             ? productList.map((productItem) => (
-                <ShoppingProductTile
-                  handleGetProductDetails={handleGetProductDetails}
-                  key={productItem.id}
-                  product={productItem}
-                  handleAddtoCart={handleAddtoCart}
-                />
-              ))
+              <ShoppingProductTile
+                handleGetProductDetails={handleGetProductDetails}
+                key={productItem.id}
+                product={productItem}
+                handleAddtoCart={handleAddtoCart} />
+            ))
             : null}
         </div>
       </div>
       <ProductDetailsDialog
         open={openDetailsDialog}
         setOpen={setOpenDetailsDialog}
-        productDetails={productDetails}
-      />
-    </div>
+        productDetails={productDetails} />
+
+    </div><div><Footer /></div></>
   );
 };
 

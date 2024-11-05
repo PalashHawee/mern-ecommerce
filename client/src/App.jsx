@@ -19,6 +19,8 @@ import UnauthPage from "./pages/unauth-page";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "./store/auth-slice";
 import { Skeleton } from "@/components/ui/skeleton";
+// src/index.js or src/App.js
+// import "./styles/tailwind-custom.css"; // Adjust based on your file structure
 
 const App = () => {
   const { user, isAuthenticated, isLoading } = useSelector(

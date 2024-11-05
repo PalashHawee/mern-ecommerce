@@ -77,22 +77,22 @@ function HeaderRightContent() {
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 ">
-          <DropdownMenuLabel className="bg-custom-green text-black">
+        <DropdownMenuContent className="w-56 bg-purple-900 text-white">
+          <DropdownMenuLabel className="bg-purple-900 text-white">
             Logged in as {user?.userName}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => navigate("/shop/account")}
-            className="cursor-pointer text-white md:text-white lg:text-black"
+            className="cursor-pointer bg-purple-900 text-white md:text-white lg:text-white hover:bg-purple-950"
           >
-            <User className="mr-2 h-4 w-4 " />
+            <User className="mr-2 h-4 w-4 text-white " />
             Account
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => handleLogout()}
-            className="cursor-pointer text-white md:text-white lg:text-black"
+            className="cursor-pointer text-white md:text-white lg:text-white"
           >
             <LogOut className="mr-2 h-4 w-4" />
             Logout
