@@ -93,6 +93,7 @@ const ShoppingListing = () => {
       if (data?.payload?.success) {
         dispatch(fetchCartItems(user?.id));
         toast({
+          className: "bg-purple-900 text-white",
           title: "Product added to cart successfully",
         });
       }
@@ -127,62 +128,71 @@ const ShoppingListing = () => {
   // console.log(productDetails, "productDetails");
 
   return (
-    <><div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
-      <ProductFilter filters={filters} handleFilter={handleFilter} />
-      <div className="bg-background w-full rounded-lg shadow-sm">
-        <div className="p-4 border-b  justify-between items-center">
-          <h2 className="text-lg font-extrabold ">All Products</h2>
-          <div className="flex items-center gap-3 justify-end">
-            <span className="text-muted-foreground opacity-40">
-              {productList?.length} Products
-            </span>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-1 "
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
+        <ProductFilter filters={filters} handleFilter={handleFilter} />
+        <div className="bg-background w-full rounded-lg shadow-sm">
+          <div className="p-4 border-b  justify-between items-center">
+            <h2 className="text-lg font-extrabold ">All Products</h2>
+            <div className="flex items-center gap-3 justify-end">
+              <span className="text-muted-foreground opacity-40">
+                {productList?.length} Products
+              </span>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center gap-1 "
+                  >
+                    <ArrowUpDown className="w-4 h-4" />
+                    <span>Sort by</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-[200px] bg-purple-900 text-white"
                 >
-                  <ArrowUpDown className="w-4 h-4" />
-                  <span>Sort by</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="end"
-                className="w-[200px] bg-purple-900 text-white"
-              >
-                <DropdownMenuRadioGroup value={sort} onValueChange={handleSort}>
-                  {sortOptions.map((sortItem) => (
-                    <DropdownMenuRadioItem
-                      value={sortItem.id}
-                      key={sortItem.id}
-                    >
-                      {sortItem.label}
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuRadioGroup
+                    value={sort}
+                    onValueChange={handleSort}
+                  >
+                    {sortOptions.map((sortItem) => (
+                      <DropdownMenuRadioItem
+                        value={sortItem.id}
+                        key={sortItem.id}
+                      >
+                        {sortItem.label}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-4">
+            {productList && productList.length > 0
+              ? productList.map((productItem) => (
+                  <ShoppingProductTile
+                    handleGetProductDetails={handleGetProductDetails}
+                    key={productItem.id}
+                    product={productItem}
+                    handleAddtoCart={handleAddtoCart}
+                  />
+                ))
+              : null}
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 md:grid-cols-3 gap-4">
-          {productList && productList.length > 0
-            ? productList.map((productItem) => (
-              <ShoppingProductTile
-                handleGetProductDetails={handleGetProductDetails}
-                key={productItem.id}
-                product={productItem}
-                handleAddtoCart={handleAddtoCart} />
-            ))
-            : null}
-        </div>
+        <ProductDetailsDialog
+          open={openDetailsDialog}
+          setOpen={setOpenDetailsDialog}
+          productDetails={productDetails}
+        />
       </div>
-      <ProductDetailsDialog
-        open={openDetailsDialog}
-        setOpen={setOpenDetailsDialog}
-        productDetails={productDetails} />
-
-    </div><div><Footer /></div></>
+      <div>
+        <Footer />
+      </div>
+    </>
   );
 };
 
