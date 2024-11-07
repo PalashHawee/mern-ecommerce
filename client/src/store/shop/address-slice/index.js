@@ -30,29 +30,39 @@ export const fetchAllAddresses = createAsyncThunk(
   }
 );
 
-export const editAddress = createAsyncThunk(
-  "/addresses/editAddress", // Action type
-  async (userId, addressId, formData) => {
-    // Perform API call to add new address
+export const editaAddress = createAsyncThunk(
+  "/addresses/editaAddress",
+  async ({ userId, addressId, formData }) => {
     const response = await axios.put(
       `http://localhost:5000/api/shop/address/update/${userId}/${addressId}`,
       formData
     );
-    return response.data; // Return the data to be used in the fulfilled action
+
+    return response.data;
   }
 );
 
+// export const deleteAddress = createAsyncThunk(
+//   "/addresses/deleteAddress", // Action type
+//   async (userId, addressId) => {
+//     // Perform API call to add new address
+//     const response = await axios.delete(
+//       `http://localhost:5000/api/shop/address/delete/${userId}/${addressId}`
+//     );
+//     return response.data; // Return the data to be used in the fulfilled action
+//   }
+// );
+
 export const deleteAddress = createAsyncThunk(
-  "/addresses/deleteAddress", // Action type
-  async (userId, addressId) => {
-    // Perform API call to add new address
+  "/addresses/deleteAddress",
+  async ({ userId, addressId }) => {
     const response = await axios.delete(
       `http://localhost:5000/api/shop/address/delete/${userId}/${addressId}`
     );
-    return response.data; // Return the data to be used in the fulfilled action
+
+    return response.data;
   }
 );
-
 const addressSlice = createSlice({
   name: "address",
   initialState,
@@ -64,11 +74,9 @@ const addressSlice = createSlice({
       })
       .addCase(addNewAddress.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.addressList = action.payload.data;
       })
       .addCase(addNewAddress.rejected, (state) => {
         state.isLoading = false;
-        state.addressList = [];
       })
       .addCase(fetchAllAddresses.pending, (state) => {
         state.isLoading = true;
