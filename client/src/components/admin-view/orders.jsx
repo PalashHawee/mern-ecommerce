@@ -40,6 +40,7 @@ const AdminOrdersView = () => {
               <TableCell>$1000</TableCell>
               <TableCell>
                 <Dialog
+                  
                   open={openDetailsDialog}
                   onOpenChange={setOpenDetailsDialog}
                 >
